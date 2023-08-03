@@ -1,8 +1,15 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers } from '../redux/users/usersSlice';
 
-function UserList() {
-  const { users, isLoading, error } = useSelector((state) => state.users);
+function Users() {
+    const { users, isLoading, error } = useSelector((state) => state.users);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    },[dispatch]);
+
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -13,14 +20,17 @@ function UserList() {
   }
 
   return (
+    <div>
+        <h2>User List</h2>
     <ul>
       {users.map((user) => (
         <li key={user.id}>
-          {user.firstName} {user.lastName}
+          {user.name.first} {user.name.last}
         </li>
       ))}
     </ul>
+    </div>
   );
 }
 
-export default UserList;
+export default Users;
